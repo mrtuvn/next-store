@@ -10,3 +10,4 @@ Fullstack Web Project
 - Never remove folder client, server
 - All middleware, api, services, api endpoints setup store in server folder
 - All work from frontend work store client folder
+- Each folder will have seperate for deploy. Ready for containerize

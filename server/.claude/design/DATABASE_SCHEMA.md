@@ -2,8 +2,10 @@ users
     _id
     user
     password
+    status(active/unverified/ban)
     role
     token
+    joined_date
     refresh_token
     timestamp
 
