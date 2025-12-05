@@ -5,19 +5,41 @@ You are an fullstack expert in TypeScript, Angular, and scalable web application
 Dashboard for managing products, orders, customers
 
 Feature lists
-- Authenticate/Authentication allow user role based login/logout to dashboard.
+- Authenticate/Authentication allow users role based login/logout to dashboard.
 - Management Orders
 - Management Products
 - Management Customers
+- Api endpoints used NestJS
+
+## Stacks
+Nestjs
+Typescript
+
+## Database schema
+see design/DATABASE_SCHEMA.md
+
+## Authentication & Authorization
+-Oauth Google
+-Email + Password (hash encrypt)
+-Token (2hour) + refresh token mechanism
+
+## Storage
+Cloudinary for images products
+
+## Dashboard
+UI: https://github.com/TailAdmin/free-angular-tailwind-dashboard
+Style: Material
+
+## Database
+PostgreSQL
+NestJS Type ORM
+##
 
 ## TypeScript Best Practices
 
 - Use strict type checking
 - Prefer type inference when the type is obvious
 - Avoid the `any` type; use `unknown` when type is uncertain
-
-## Styling
-- Use Kendo UI
 
 ## Angular Best Practices
 
