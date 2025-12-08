@@ -1,0 +1,88 @@
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button, Input } from '@/components/atoms';
+import { authService } from '@/services/auth.service';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { setCredentials } from '@/slices/authSlice';
+import { toast } from 'sonner';
+
+function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const response = await authService.login({ email, password });
+      
+      // Save credentials to Redux
+      dispatch(setCredentials({
+        user: response.data.user,
+        accessToken: response.data.accessToken
+      }));
+
+      // Save refresh token to localStorage
+      localStorage.setItem('refreshToken', response.data.refreshToken);
+
+      toast.success('Login successful!');
+      navigate('/');
+    } catch (error: any) {
+      const message = error.response?.data?.message || 'Login failed';
+      toast.error(message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-lg">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-gray-900">Welcome Back</h2>
+          <p className="mt-2 text-gray-600">Sign in to your account</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <Input
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            required
+            fullWidth
+          />
+
+          <Input
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+            required
+            fullWidth
+          />
+
+          <Button type="submit" fullWidth isLoading={isLoading}>
+            Sign In
+          </Button>
+
+          <div className="text-center text-sm">
+            <span className="text-gray-600">Don't have an account? </span>
+            <Link to="/register" className="text-primary-600 hover:text-primary-700 font-medium">
+              Sign up
+            </Link>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+export default Login;
+
