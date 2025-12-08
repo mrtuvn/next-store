@@ -1,7 +1,23 @@
-import { forwardRef, type InputHTMLAttributes } from 'react';
+import { forwardRef, useId, type InputHTMLAttributes } from 'react';
+import { cva } from 'class-variance-authority';
 import { cn } from '@/utils/cn';
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+const inputVariants = cva(
+  'h-10 px-3 py-2 rounded-lg border bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 transition-colors',
+  {
+    variants: {
+      error: {
+        true: 'border-error focus:ring-error',
+        false: 'border-gray-300 focus:ring-primary-500',
+      },
+    },
+    defaultVariants: {
+      error: false,
+    },
+  }
+);
+
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label?: string;
   error?: string;
   helperText?: string;
@@ -21,7 +37,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-    const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
+    const generatedId = useId();
+    const inputId = id || generatedId;
 
     return (
       <div className={cn('flex flex-col gap-1', fullWidth && 'w-full')}>
@@ -37,14 +54,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <input
           ref={ref}
           id={inputId}
-          className={cn(
-            'h-10 px-3 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400',
-            'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent',
-            'disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50',
-            'transition-colors',
-            error && 'border-error focus:ring-error',
-            className
-          )}
+          className={cn(inputVariants({ error: !!error }), className)}
           aria-invalid={!!error}
           aria-describedby={
             error ? `${inputId}-error` : helperText ? `${inputId}-helper` : undefined
@@ -68,5 +78,5 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
 Input.displayName = 'Input';
 
+export { Input };
 export default Input;
-

@@ -37,18 +37,6 @@
   --radius-2xl: 1rem;
   --radius-3xl: 1.5rem;
 
-  /* Custom breakpoints */
-  --breakpoint-3xl: 1920px;
-  --breakpoint-4xl: 2560px;
-
-  /* Z-index scale */
-  --z-index-dropdown: 1000;
-  --z-index-sticky: 1020;
-  --z-index-fixed: 1030;
-  --z-index-modal-backdrop: 1040;
-  --z-index-modal: 1050;
-  --z-index-popover: 1060;
-  --z-index-tooltip: 1070;
 }
 
 /* Custom utilities - Using @layer for compatibility */
@@ -85,16 +73,22 @@
 }
 
 /* Base styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: inherit;
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+  }
+
+  html {
+    box-sizing: border-box;
+  }
 }
+
 
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  box-sizing: border-box;
 }
 
 body {
